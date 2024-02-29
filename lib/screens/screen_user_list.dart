@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
+
 import 'package:munch_flutter_assessment/bloc/index.dart';
 import 'package:munch_flutter_assessment/models/index.dart';
 import 'package:munch_flutter_assessment/styles/index.dart';
+import 'package:munch_flutter_assessment/utils/index.dart';
 import 'package:munch_flutter_assessment/widgets/index.dart';
 
 class UserListScreen extends StatelessWidget {
-  const UserListScreen({
-    Key? key,
-  }) : super(key: key);
+  const UserListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     List<User> users = userList;
     users.sort((a, b) => a.firstName.compareTo(b.firstName));
-    List<String> groupedUserKeys = [];
-    Map<String, List<User>> groupedUserList = {};
-    for (var user in users) {
-      String firstLetter = user.firstName[0].toUpperCase();
-      if (!groupedUserList.containsKey(firstLetter)) {
-        groupedUserKeys.add(firstLetter);
-        groupedUserList[firstLetter] = [];
-      }
-      groupedUserList[firstLetter]!.add(user);
-    }
+    Map<String, List<User>> groupedUsers =
+        groupBy(users, (User user) => user.firstName.firstChar);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select an Employee'),
@@ -40,15 +34,13 @@ class UserListScreen extends StatelessWidget {
             topRight: Radius.circular(16),
           ),
         ),
-        child: ListView.builder(
-          itemCount: groupedUserKeys.length,
-          itemBuilder: (context, index) {
-            String groupKey = groupedUserKeys[index];
+        child: ListView(
+          children: groupedUsers.entries.map((group) {
             return GroupUser(
-              groupKey: groupKey,
-              users: groupedUserList[groupKey]!,
+              groupKey: group.key,
+              users: group.value,
             );
-          },
+          }).toList(),
         ),
       ),
     );
@@ -56,14 +48,14 @@ class UserListScreen extends StatelessWidget {
 }
 
 class GroupUser extends StatelessWidget {
-  String groupKey;
-  List<User> users;
+  final String groupKey;
+  final List<User> users;
 
-  GroupUser({
-    Key? key,
+  const GroupUser({
+    super.key,
     required this.groupKey,
     required this.users,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +78,7 @@ class GroupUser extends StatelessWidget {
                 String firstName = user.firstName;
                 String lastName = user.lastName;
                 String initials =
-                    firstName.substring(0, 1) + lastName.substring(0, 1);
+                    firstName.firstChar+ lastName.firstChar;
                 return ListTile(
                   title: Row(
                     children: [

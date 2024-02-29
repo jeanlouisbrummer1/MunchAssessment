@@ -11,6 +11,13 @@ abstract class PinEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class PinClearEvent extends PinEvent {
+  const PinClearEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class PinEnteredEvent extends PinEvent {
   final String pin;
 
@@ -20,10 +27,10 @@ class PinEnteredEvent extends PinEvent {
   List<Object> get props => [pin];
 }
 
-class ValidatePinEvent extends PinEvent {
+class PinValidateEvent extends PinEvent {
   final String correctPin;
 
-  const ValidatePinEvent(this.correctPin);
+  const PinValidateEvent(this.correctPin);
 
   @override
   List<Object> get props => [correctPin];
@@ -70,19 +77,18 @@ class PinInvalidState extends PinState {}
 // BLOC
 //
 class PinBloc extends Bloc<PinEvent, PinState> {
-  PinBloc() : super(PinInitialState()) {
+  PinBloc() : super(const PinInitialState()) {
+    on<PinClearEvent>((event, emit) {
+      emit(const PinInitialState());
+    });
     on<PinEnteredEvent>((event, emit) {
-      print('PIN ENTER');
       if (event.pin.length == 4) {
-        print('PIN ENTER 1');
         emit(PinCompleteState(event.pin));
       } else {
-        print('PIN ENTER 2');
         emit(PinEnteringState(event.pin));
       }
     });
-    on<ValidatePinEvent>((event, emit) {
-      print('Validate Pin');
+    on<PinValidateEvent>((event, emit) {
       if (state is PinCompleteState) {
         final currentState = state as PinCompleteState;
         if (currentState.pin == event.correctPin) {

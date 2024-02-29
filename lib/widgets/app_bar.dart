@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:munch_flutter_assessment/styles/index.dart';
 import 'package:munch_flutter_assessment/widgets/index.dart';
 
-class TitleBar extends StatefulWidget {
-  const TitleBar({Key? key}) : super(key: key);
-
-  @override
-  State<TitleBar> createState() => _TitleBarState();
-}
-
-class _TitleBarState extends State<TitleBar> {
+class TitleBar extends StatelessWidget {
   final String logoText = 'JP';
   final String heading = 'Jim\'s Place';
   final String subheading = '22 Burton Road';
+
+  const TitleBar({super.key});
 
   @override
   Widget build(BuildContext context) {

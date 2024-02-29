@@ -13,11 +13,11 @@ class CustomIcons {
 
 class CustomIcon extends StatelessWidget {
   const CustomIcon({
-    Key? key,
+    super.key,
     required this.name,
     required this.size,
     required this.color,
-  }) : super(key: key);
+  });
 
   final String name;
   final double size;

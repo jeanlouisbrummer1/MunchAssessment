@@ -4,7 +4,7 @@ import 'package:munch_flutter_assessment/bloc/index.dart';
 import 'package:munch_flutter_assessment/styles/index.dart';
 
 class UserField extends StatelessWidget {
-  const UserField({Key? key}) : super(key: key);
+  const UserField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class UserField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: primaryAccent,
                 borderRadius: BorderRadius.circular(10),
@@ -36,14 +36,13 @@ class UserField extends StatelessWidget {
             Expanded(
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {
-                  print('BLOC BUILDER: ${state}');
                   String selectedUser = 'Select an Employee';
                   if (state is UserSelectedState) {
                     selectedUser =
                         '${state.user.firstName} ${state.user.lastName}';
                   }
                   return Container(
-                    padding: EdgeInsets.only(left: 16),
+                    padding: const EdgeInsets.only(left: 16),
                     child: Text(
                       selectedUser,
                       style: kInput,
@@ -53,7 +52,7 @@ class UserField extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: CustomIcon(
                 name: CustomIcons.iconArrow,
                 color: primaryColor,

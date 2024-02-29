@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget sectionPinKeypad() {
-    return const Expanded(
+    return Expanded(
       child: PinKeypad(),
     );
   }

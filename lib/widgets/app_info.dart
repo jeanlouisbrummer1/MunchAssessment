@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:munch_flutter_assessment/models/index.dart';
 import 'package:munch_flutter_assessment/styles/index.dart';
 
 class AppInfo extends StatelessWidget {
-  const AppInfo({Key? key}) : super(key: key);
+  const AppInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String version = '6.6.5';
-    String environment = 'Production';
-    String deviceID = 'ACEHFJD3-DJUFG-SJHFS-84YSS';
-
     return Container(
+      height: 230,
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -51,7 +49,11 @@ class AppInfo extends StatelessWidget {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 16),
+            width: double.infinity,
+            margin: const EdgeInsets.only(
+              top: 16,
+              bottom: 8,
+            ),
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: containerColour,
@@ -60,9 +62,18 @@ class AppInfo extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Version $version'),
-                Text(environment),
-                Text('Device ID: $deviceID'),
+                Text(
+                  'Version ${AppInfoModel.instance.version}',
+                  style: const TextStyle(fontSize: 12.0),
+                ),
+                Text(
+                  AppInfoModel.instance.environment,
+                  style: const TextStyle(fontSize: 12.0),
+                ),
+                Text(
+                  'Device ID: ${AppInfoModel.instance.deviceID}',
+                  style: const TextStyle(fontSize: 12.0),
+                ),
               ],
             ),
           ),
@@ -74,7 +85,7 @@ class AppInfo extends StatelessWidget {
                 backgroundColor: tertiaryAccent,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
-                  vertical: 16,
+                  vertical: 10,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -86,8 +97,8 @@ class AppInfo extends StatelessWidget {
                 color: tertiaryColor,
                 size: 24,
               ),
-              onPressed: () {
-                // Handle reset app logic
+              onPressed: () async {
+                await AppInfoModel.instance.fetchAppInfo();
               },
               label: const Text('Reset App'),
             ),
